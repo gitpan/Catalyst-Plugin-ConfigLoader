@@ -1,0 +1,35 @@
+NAME
+    Catalyst::Plugin::ConfigLoader - Load config files of various types
+
+SYNOPSIS
+            package MyApp;
+        
+            use Catalyst( ConfigLoader );
+        
+        # by default myapp.* will be loaded
+        # you can specify a file if you'd like
+        __PACKAGE__->config( file = > 'config.yaml' );
+    
+DESCRIPTION
+    This mdoule will attempt to load find and load a configuration file of
+    various types. Currently it supports YAML, JSON, XML, INI and Perl
+    formats.
+
+METHODS
+  setup( )
+    This method is automatically called by Catalyst's setup routine. It will
+    attempt to use each plugin and set the "config()" section once a file
+    has been successfully loaded.
+
+AUTHOR
+    * Brian Cassidy <bricas@cpan.org>
+
+COPYRIGHT AND LICENSE
+    Copyright 2006 by Brian Cassidy
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
+SEE ALSO
+    * Catalyst
+

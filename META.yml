@@ -1,0 +1,24 @@
+---
+name: Catalyst-Plugin-ConfigLoader
+version: 0.01
+author:
+  - Brian Cassidy <bricas@cpan.org>
+abstract: Load config files of various types
+license: perl
+requires:
+  Catalyst: 0
+provides:
+  Catalyst::Plugin::ConfigLoader:
+    file: lib/Catalyst/Plugin/ConfigLoader.pm
+    version: 0.01
+  Catalyst::Plugin::ConfigLoader::INI:
+    file: lib/Catalyst/Plugin/ConfigLoader/INI.pm
+  Catalyst::Plugin::ConfigLoader::JSON:
+    file: lib/Catalyst/Plugin/ConfigLoader/JSON.pm
+  Catalyst::Plugin::ConfigLoader::Perl:
+    file: lib/Catalyst/Plugin/ConfigLoader/Perl.pm
+  Catalyst::Plugin::ConfigLoader::XML:
+    file: lib/Catalyst/Plugin/ConfigLoader/XML.pm
+  Catalyst::Plugin::ConfigLoader::YAML:
+    file: lib/Catalyst/Plugin/ConfigLoader/YAML.pm
+generated_by: Module::Build version 0.2611
