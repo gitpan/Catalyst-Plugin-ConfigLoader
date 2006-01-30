@@ -13,12 +13,22 @@ Loads XML files. Example:
 
     <config>
         <name>TestApp</name>
-        <component name="Controller::Config">
+        <component name="Controller::Foo">
             <foo>bar</foo>
         </component>
     </config>
 
 =head1 METHODS
+
+=head2 extensions( )
+
+return an array of valid extensions (C<xml>).
+
+=cut
+
+sub extensions {
+    return qw( xml );
+}
 
 =head2 load( $file )
 
@@ -27,23 +37,12 @@ Attempts to load C<$file> as an XML file.
 =cut
 
 sub load {
-	my $class    = shift;
-	my $confpath = shift;
-
-	my $file;
-    if( $confpath =~ /\.(.{3})$/ ) {
-        return unless $1 eq 'xml';
-        $file = $confpath;
-    }
-    else {
-        $file = "$confpath.xml";
-    }
-    
-    return unless -f $file;
+    my $class = shift;
+    my $file  = shift;
 
     require XML::Simple;
     XML::Simple->import;
-    my $config      = XMLin( $file, ForceArray => [ 'component' ] );
+    my $config = XMLin( $file, ForceArray => [ 'component' ] );
 
     my $components = delete $config->{ component };
 	foreach my $element ( keys %$components ) {
@@ -73,6 +72,8 @@ it under the same terms as Perl itself.
 =over 4 
 
 =item * L<Catalyst>
+
+=item * <Catalyst::Plugin::ConfigLoader>
 
 =back
 

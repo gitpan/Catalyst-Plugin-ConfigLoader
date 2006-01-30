@@ -9,7 +9,7 @@ use Module::Pluggable::Fast
     search  => [ __PACKAGE__ ],
     require => 1;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 NAME
 
@@ -17,9 +17,9 @@ Catalyst::Plugin::ConfigLoader - Load config files of various types
 
 =head1 SYNOPSIS
 
-	package MyApp;
-	
-	use Catalyst( ConfigLoader );
+    package MyApp;
+    
+    use Catalyst( ConfigLoader );
 	
     # by default myapp.* will be loaded
     # you can specify a file if you'd like
@@ -43,14 +43,29 @@ successfully loaded.
 =cut
 
 sub setup {
-    my $c        = shift;
-    my $confpath = $c->config->{ file } || $c->path_to( Catalyst::Utils::appprefix( ref $c || $c ) );
+    my $c    = shift;
+    my $path = $c->config->{ file } || $c->path_to( Catalyst::Utils::appprefix( ref $c || $c ) );
+
+    my( $extension ) = ( $path =~ /\.(.{1,4})$/ );
     
     for my $loader ( $c->_config_loaders ) {
-        my $config = $loader->load( $confpath );
-        if( $config ) {
-            $c->config( $config );
-            last;
+        my @files;
+        my @extensions = $loader->extensions;
+        if( $extension ) {
+            next unless grep { $_ eq $extension } @extensions;
+            push @files, $path;
+        }
+        else {
+            push @files, "$path.$_" for @extensions;
+        }
+
+        for( @files ) {
+            next unless -f $_;
+            my $config = $loader->load( $_ );
+            if( $config ) {
+                $c->config( $config );
+                last;
+            }
         }
     }
 

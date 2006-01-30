@@ -2,9 +2,9 @@ NAME
     Catalyst::Plugin::ConfigLoader - Load config files of various types
 
 SYNOPSIS
-            package MyApp;
-        
-            use Catalyst( ConfigLoader );
+        package MyApp;
+    
+        use Catalyst( ConfigLoader );
         
         # by default myapp.* will be loaded
         # you can specify a file if you'd like

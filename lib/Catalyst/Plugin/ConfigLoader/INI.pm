@@ -13,10 +13,20 @@ Loads INI files. Example:
 
     name=TestApp
     
-    [Controller::Config]
+    [Controller::Foo]
     foo=bar
 
 =head1 METHODS
+
+=head2 extensions( )
+
+return an array of valid extensions (C<ini>).
+
+=cut
+
+sub extensions {
+    return qw( ini );
+}
 
 =head2 load( $file )
 
@@ -25,23 +35,13 @@ Attempts to load C<$file> as an INI file.
 =cut
 
 sub load {
-	my $class    = shift;
-	my $confpath = shift;
-
-	my $file;
-    if( $confpath =~ /\.(.{3})$/ ) {
-        return unless $1 eq 'ini';
-        $file = $confpath;
-    }
-    else {
-        $file = "$confpath.ini";
-    }
-    
-    return unless -f $file;
+    my $class = shift;
+    my $file  = shift;
 
     require Config::Tiny;
     my $config = Config::Tiny->read( $file );
     my $main   = delete $config->{ _ };
+    
     $config->{ $_ } = $main->{ $_ } for keys %$main;
 
     return $config;
@@ -67,6 +67,8 @@ it under the same terms as Perl itself.
 =over 4 
 
 =item * L<Catalyst>
+
+=item * <Catalyst::Plugin::ConfigLoader>
 
 =back
 

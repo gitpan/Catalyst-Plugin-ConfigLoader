@@ -1,6 +1,6 @@
 ---
 name: Catalyst-Plugin-ConfigLoader
-version: 0.01
+version: 0.02
 author:
   - Brian Cassidy <bricas@cpan.org>
 abstract: Load config files of various types
@@ -10,7 +10,7 @@ requires:
 provides:
   Catalyst::Plugin::ConfigLoader:
     file: lib/Catalyst/Plugin/ConfigLoader.pm
-    version: 0.01
+    version: 0.02
   Catalyst::Plugin::ConfigLoader::INI:
     file: lib/Catalyst/Plugin/ConfigLoader/INI.pm
   Catalyst::Plugin::ConfigLoader::JSON:

@@ -13,12 +13,22 @@ Loads Perl files. Example:
 
     {
         name               => 'TestApp',
-        Controller::Config => {
+        Controller::Foo => {
             foo => 'bar'
         }
     }
 
 =head1 METHODS
+
+=head2 extensions( )
+
+return an array of valid extensions (C<pl>, C<perl>).
+
+=cut
+
+sub extensions {
+    return qw( pl perl );
+}
 
 =head2 load( $file )
 
@@ -27,22 +37,10 @@ Attempts to load C<$file> as a Perl file.
 =cut
 
 sub load {
-	my $class    = shift;
-	my $confpath = shift;
+    my $class = shift;
+    my $file  = shift;
 
-	my @files;
-    if( $confpath =~ /\.(.{2,4})$/ ) {
-        return unless $1 =~ /^p(er)?l$/;
-        @files = $confpath;
-    }
-    else {
-        @files = map { "$confpath.$_" } qw( pl perl );
-    }
-    
-    for my $file ( @files ) {
-        next unless -f $file;
-        return eval { require $file };
-    }
+    return eval { require $file };
 }
 
 =head1 AUTHOR
@@ -65,6 +63,8 @@ it under the same terms as Perl itself.
 =over 4 
 
 =item * L<Catalyst>
+
+=item * <Catalyst::Plugin::ConfigLoader>
 
 =back
 

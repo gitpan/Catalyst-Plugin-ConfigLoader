@@ -15,12 +15,22 @@ Loads JSON files. Example:
 
     {
         "name": "TestApp",
-        "Controller::Config": {
+        "Controller::Foo": {
             "foo": "bar"
         }
     }
 
 =head1 METHODS
+
+=head2 extensions( )
+
+return an array of valid extensions (C<json>, C<jsn>).
+
+=cut
+
+sub extensions {
+    return qw( json jsn );
+}
 
 =head2 load( $file )
 
@@ -29,32 +39,19 @@ Attempts to load C<$file> as a JSON file.
 =cut
 
 sub load {
-	my $class    = shift;
-	my $confpath = shift;
+    my $class = shift;
+    my $file  = shift;
 
-	my @files;
-    if( $confpath =~ /\.(.{3,4})$/ ) {
-        return unless $1 =~ /^jso?n$/;
-        @files = $confpath;
+    my $content = read_file( $file );
+
+    eval { require JSON::Syck; };
+    if( $@ ) {
+        require JSON;
+        JSON->import;
+        return jsonToObj( $content );
     }
     else {
-        @files = map { "$confpath.$_" } qw( json jsn );
-    }
-    
-    for my $file ( @files ) {
-        next unless -f $file;
-        
-        my $content = read_file( $file );
-
-        eval { require JSON::Syck; };
-        if( $@ ) {
-            require JSON;
-            JSON->import;
-            return jsonToObj( $content );
-        }
-        else {
-            return JSON::Syck::Load( $content );
-        }
+        return JSON::Syck::Load( $content );
     }
 }
 
@@ -78,6 +75,8 @@ it under the same terms as Perl itself.
 =over 4 
 
 =item * L<Catalyst>
+
+=item * <Catalyst::Plugin::ConfigLoader>
 
 =back
 
