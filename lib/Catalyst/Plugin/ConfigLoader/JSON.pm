@@ -76,7 +76,7 @@ it under the same terms as Perl itself.
 
 =item * L<Catalyst>
 
-=item * <Catalyst::Plugin::ConfigLoader>
+=item * L<Catalyst::Plugin::ConfigLoader>
 
 =back
 

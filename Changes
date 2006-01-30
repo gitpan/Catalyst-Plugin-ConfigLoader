@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.03  Mon Jan 30 2006
+	- pod fixes
+
 0.02  Sun Jan 29 2006
 	- refactoring (suggested by Christian Hansen)
 

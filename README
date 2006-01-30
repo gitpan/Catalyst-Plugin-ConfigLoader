@@ -4,7 +4,9 @@ NAME
 SYNOPSIS
         package MyApp;
     
-        use Catalyst( ConfigLoader );
+        # ConfigLoader should be first in your list so
+        # other plugins can get the config information
+        use Catalyst qw( ConfigLoader ... );
         
         # by default myapp.* will be loaded
         # you can specify a file if you'd like
@@ -18,8 +20,8 @@ DESCRIPTION
 METHODS
   setup( )
     This method is automatically called by Catalyst's setup routine. It will
-    attempt to use each plugin and set the "config()" section once a file
-    has been successfully loaded.
+    attempt to use each plugin and, once a file has been successfully
+    loaded, set the "config()" section.
 
 AUTHOR
     * Brian Cassidy <bricas@cpan.org>
