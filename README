@@ -10,8 +10,8 @@ SYNOPSIS
         
         # by default myapp.* will be loaded
         # you can specify a file if you'd like
-        __PACKAGE__->config( file = > 'config.yaml' );
-    
+        __PACKAGE__->config( file = > 'config.yaml' );    
+
 DESCRIPTION
     This mdoule will attempt to load find and load a configuration file of
     various types. Currently it supports YAML, JSON, XML, INI and Perl
@@ -23,8 +23,23 @@ METHODS
     attempt to use each plugin and, once a file has been successfully
     loaded, set the "config()" section.
 
+  finalize_config
+    This method is called after the config file is loaded. It can be used to
+    implement tuning of config values that can only be done at runtime. If
+    you need to do this to properly configure any plugins, it's important to
+    load ConfigLoader before them. ConfigLoader provides a default
+    finalize_config method which walks through the loaded config hash and
+    replaces any strings beginning with "__HOME__/<path>" with the full path
+    to the file inside the app's home directory.
+
 AUTHOR
     * Brian Cassidy <bricas@cpan.org>
+
+CONTRIBUTORS
+    The following people have generously donated their time to the
+    development of this module:
+
+    * David Kamholz <dkamholz@cpan.org>
 
 COPYRIGHT AND LICENSE
     Copyright 2006 by Brian Cassidy
