@@ -1,5 +1,11 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.05  Thu Apr 18 2006
+    - __HOME__ now corresponds to $c->path_to( '' ) and nothing else
+    - __path_to( 'foo/bar' )__ turns in to $c->path_to( 'foo', 'bar' )
+    - attemps to load ${config}_local.$ext after ${config}.$ext for
+      an overriding effect
+
 0.04  Wed Feb 08 2006
     - add finalize_config method
     - make default finalize_config traverse the config and substitute

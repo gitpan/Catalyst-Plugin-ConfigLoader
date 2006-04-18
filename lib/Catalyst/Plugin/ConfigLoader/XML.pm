@@ -75,6 +75,8 @@ it under the same terms as Perl itself.
 
 =item * L<Catalyst::Plugin::ConfigLoader>
 
+=item * L<XML::Simple>
+
 =back
 
 =cut

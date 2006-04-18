@@ -13,9 +13,13 @@ SYNOPSIS
         __PACKAGE__->config( file = > 'config.yaml' );    
 
 DESCRIPTION
-    This mdoule will attempt to load find and load a configuration file of
+    This module will attempt to load find and load a configuration file of
     various types. Currently it supports YAML, JSON, XML, INI and Perl
     formats.
+
+    To support the distinction between development and production
+    environments, this module will also attemp to load a local config (e.g.
+    myapp_local.yaml) which will override any duplicate settings.
 
 METHODS
   setup( )
@@ -29,8 +33,9 @@ METHODS
     you need to do this to properly configure any plugins, it's important to
     load ConfigLoader before them. ConfigLoader provides a default
     finalize_config method which walks through the loaded config hash and
-    replaces any strings beginning with "__HOME__/<path>" with the full path
-    to the file inside the app's home directory.
+    replaces any strings beginning containing "__HOME__" with the full path
+    to app's home directory (i.e. "$c->path_to('')" ). You can also use
+    "__path_to('foo/bar')__" which translates to "$c->path_to('foo', 'bar')"
 
 AUTHOR
     * Brian Cassidy <bricas@cpan.org>
