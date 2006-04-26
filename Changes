@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.06  Wed Apr 26 2006
+    - remove "last;" so that _local configs will be processed
+
 0.05  Thu Apr 18 2006
     - __HOME__ now corresponds to $c->path_to( '' ) and nothing else
     - __path_to( 'foo/bar' )__ turns in to $c->path_to( 'foo', 'bar' )
