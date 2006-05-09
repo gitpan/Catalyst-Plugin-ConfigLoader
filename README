@@ -7,7 +7,7 @@ SYNOPSIS
         # ConfigLoader should be first in your list so
         # other plugins can get the config information
         use Catalyst qw( ConfigLoader ... );
-        
+    
         # by default myapp.* will be loaded
         # you can specify a file if you'd like
         __PACKAGE__->config( file = > 'config.yaml' );    

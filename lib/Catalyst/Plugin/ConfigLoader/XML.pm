@@ -16,6 +16,9 @@ Loads XML files. Example:
         <component name="Controller::Foo">
             <foo>bar</foo>
         </component>
+        <model name="Baz">
+            <qux>xyzzy</qux>
+        </model>
     </config>
 
 =head1 METHODS
@@ -42,12 +45,7 @@ sub load {
 
     require XML::Simple;
     XML::Simple->import;
-    my $config = XMLin( $file, ForceArray => [ 'component' ] );
-
-    my $components = delete $config->{ component };
-	foreach my $element ( keys %$components ) {
-            $config->{ $element } = $components->{ $element };
-    }
+    my $config = XMLin( $file, ForceArray => [ qw( component model view controller ) ] );
 
     return $config;
 }

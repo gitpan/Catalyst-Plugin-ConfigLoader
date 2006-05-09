@@ -78,6 +78,10 @@ it under the same terms as Perl itself.
 
 =item * L<Catalyst::Plugin::ConfigLoader>
 
+=item * L<JSON>
+
+=item * L<JSON::Syck>
+
 =back
 
 =cut

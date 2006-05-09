@@ -1,38 +1,39 @@
-package Catalyst::Plugin::ConfigLoader::Perl;
+package Catalyst::Plugin::ConfigLoader::General;
 
 use strict;
 use warnings;
 
 =head1 NAME
 
-Catalyst::Plugin::ConfigLoader::Perl - Load Perl config files
+Catalyst::Plugin::ConfigLoader::General - Load Config::General files
 
 =head1 DESCRIPTION
 
-Loads Perl files. Example:
+Loads Config::General files. Example:
 
-    {
-        name => 'TestApp',
-        Controller::Foo => {
-            foo => 'bar'
-        }
-    }
+    name = TestApp
+    <Component Controller::Foo>
+        foo bar
+    </Component>
+    <Model Baz>
+        qux xyzzy
+    </Model>
 
 =head1 METHODS
 
 =head2 extensions( )
 
-return an array of valid extensions (C<pl>, C<perl>).
+return an array of valid extensions (C<cnf>, C<conf>).
 
 =cut
 
 sub extensions {
-    return qw( pl perl );
+    return qw( cnf conf );
 }
 
 =head2 load( $file )
 
-Attempts to load C<$file> as a Perl file.
+Attempts to load C<$file> via Config::General.
 
 =cut
 
@@ -40,7 +41,11 @@ sub load {
     my $class = shift;
     my $file  = shift;
 
-    return eval { require $file };
+    require Config::General;
+    my $configfile = Config::General->new( $file );
+    my $config     = { $configfile->getall };
+    
+    return $config;
 }
 
 =head1 AUTHOR
@@ -65,6 +70,8 @@ it under the same terms as Perl itself.
 =item * L<Catalyst>
 
 =item * L<Catalyst::Plugin::ConfigLoader>
+
+=item * L<Config::General>
 
 =back
 

@@ -1,6 +1,7 @@
 Build.PL
 Changes
 lib/Catalyst/Plugin/ConfigLoader.pm
+lib/Catalyst/Plugin/ConfigLoader/General.pm
 lib/Catalyst/Plugin/ConfigLoader/INI.pm
 lib/Catalyst/Plugin/ConfigLoader/JSON.pm
 lib/Catalyst/Plugin/ConfigLoader/Perl.pm
