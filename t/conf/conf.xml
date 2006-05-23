@@ -1,0 +1,9 @@
+<config>
+    <name>TestApp</name>
+    <component name="Controller::Foo">
+        <foo>bar</foo>
+    </component>
+    <model name="Baz">
+        <qux>xyzzy</qux>
+    </model>
+</config>

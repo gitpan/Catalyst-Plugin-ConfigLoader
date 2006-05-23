@@ -10,7 +10,7 @@ SYNOPSIS
     
         # by default myapp.* will be loaded
         # you can specify a file if you'd like
-        __PACKAGE__->config( file = > 'config.yaml' );    
+        __PACKAGE__->config( file => 'config.yaml' );    
 
 DESCRIPTION
     This module will attempt to load find and load a configuration file of
@@ -36,6 +36,21 @@ METHODS
     replaces any strings beginning containing "__HOME__" with the full path
     to app's home directory (i.e. "$c->path_to('')" ). You can also use
     "__path_to('foo/bar')__" which translates to "$c->path_to('foo', 'bar')"
+
+  get_config_path
+    This method determines the path, filename prefix and file extension to
+    be used for config loading. It returns the path (up to the filename less
+    the extension) to check and the specific extension to use (if it was
+    specified).
+
+    The order of preference is specified as:
+
+    * $ENV{ MYAPP_CONFIG }
+    * "$c-"config->{ file }>
+    * "$c-"path_to( $application_prefix )>
+
+    If either of the first two user-specified options are directories, the
+    application prefix will be added on to the end of the path.
 
 AUTHOR
     * Brian Cassidy <bricas@cpan.org>
