@@ -1,4 +1,4 @@
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 my $app = MockApp->new;
 $app->setup;
@@ -8,6 +8,7 @@ is( $app->config->{ 'Controller::Foo' }->{ foo }, 'bar' );
 is( $app->config->{ 'Controller::Foo' }->{ new }, 'key' );
 is( $app->config->{ 'Model::Baz' }->{ qux }, 'xyzzy' );
 is( $app->config->{ 'Model::Baz' }->{ another }, 'new key' );
+is( $app->config->{ 'view' }, 'View::TT::New' );
 
 package MockApp;
 

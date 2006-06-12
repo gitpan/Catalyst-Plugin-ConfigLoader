@@ -1,5 +1,6 @@
 {
     name => 'TestApp',
+    view => 'View::TT',
     'Controller::Foo' => {
         foo => 'bar'
     },

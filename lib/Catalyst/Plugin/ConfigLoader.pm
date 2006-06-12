@@ -10,7 +10,7 @@ use Module::Pluggable::Fast
     require => 1;
 use Data::Visitor::Callback;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 NAME
 
@@ -168,7 +168,11 @@ sub _fix_syntax {
         map +{
             prefix => $_ eq 'Component' ? '' : $_ . '::',
             values => delete $config->{ lc $_ } || delete $config->{ $_ }
-        }, qw( Component Model View Controller )
+        },
+        grep {
+            ref $config->{ lc $_ } || ref $config->{ $_ }
+        }
+        qw( Component Model View Controller )
     );
 
     foreach my $comp ( @components ) {

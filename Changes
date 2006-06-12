@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.09  Wed May 24 2006
+    - ignore non-ref model/view/controller/component keys
+
 0.08  Tue May 23 2006
     - added get_config_path() which extracts the path finding code
     - added the ability to specify a MYAPP_CONFIG ENV variable

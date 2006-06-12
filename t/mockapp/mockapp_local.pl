@@ -1,4 +1,5 @@
 {
+    view => 'View::TT::New',
     'Controller::Foo' => {
         new => 'key'
     },
