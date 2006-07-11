@@ -7,7 +7,7 @@ use NEXT;
 use Module::Pluggable::Object ();
 use Data::Visitor::Callback;
 
-our $VERSION = '0.1';
+our $VERSION = '0.11';
 
 =head1 NAME
 
