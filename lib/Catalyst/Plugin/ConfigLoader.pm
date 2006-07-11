@@ -4,13 +4,10 @@ use strict;
 use warnings;
 
 use NEXT;
-use Module::Pluggable::Fast
-    name    => '_config_loaders',
-    search  => [ __PACKAGE__ ],
-    require => 1;
+use Module::Pluggable::Object ();
 use Data::Visitor::Callback;
 
-our $VERSION = '0.09';
+our $VERSION = '0.1';
 
 =head1 NAME
 
@@ -51,8 +48,13 @@ loaded, set the C<config()> section.
 sub setup {
     my $c = shift;
     my( $path, $extension ) = $c->get_config_path;
-    
-    for my $loader ( $c->_config_loaders ) {
+
+    my $finder = Module::Pluggable::Object->new(
+        search_path => [ __PACKAGE__ ],
+        require     => 1
+    );
+
+    for my $loader ( $finder->plugins ) {
         my @files;
         my @extensions = $loader->extensions;
         if( $extension ) {
@@ -67,23 +69,11 @@ sub setup {
             next unless -f $_;
             my $config = $loader->load( $_ );
 
-            $c->log->debug( "Loaded Config $_" ) if $c->debug;
+            $c->log->debug( qq(Loaded Config "$_") ) if $c->debug;
             
             next if !$config;
 
             _fix_syntax( $config );
-            
-            # merge hashes 1 level down
-            for my $key ( keys %$config ) {
-                if( exists $c->config->{ $key } ) {
-                    my $isa_ref = ref $config->{ $key };
-
-                    next if !$isa_ref or $isa_ref ne 'HASH';
-
-                    my %temp = ( %{ $c->config->{ $key } }, %{ $config->{ $key } } );
-                    $config->{ $key } = \%temp;
-                }
-            }
             
             $c->config( $config );
         }
@@ -114,8 +104,8 @@ sub finalize_config {
     my $v = Data::Visitor::Callback->new(
         plain_value => sub {
             return unless defined $_;
-            s[__HOME__][ $c->path_to( '' ) ]e;
-            s[__path_to\((.+)\)__][ $c->path_to( split( '/', $1 ) ) ]e;
+            s{__HOME__}{ $c->path_to( '' ) }e;
+            s{__path_to\((.+)\)__}{ $c->path_to( split( '/', $1 ) ) }e;
         }
     );
     $v->visit( $c->config );
@@ -152,10 +142,10 @@ sub get_config_path {
         || $c->config->{ file }
         || $c->path_to( $prefix );
 
-    my( $extension ) = ( $path =~ /\.(.{1,4})$/ );
+    my( $extension ) = ( $path =~ m{\.(.{1,4})$} );
     
     if( -d $path ) {
-        $path  =~ s/[\/\\]$//;
+        $path  =~ s{[\/\\]$}{};
         $path .= "/$prefix";
     }
     
@@ -172,7 +162,7 @@ sub _fix_syntax {
         grep {
             ref $config->{ lc $_ } || ref $config->{ $_ }
         }
-        qw( Component Model View Controller )
+        qw( Component Model M View V Controller C )
     );
 
     foreach my $comp ( @components ) {

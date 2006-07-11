@@ -9,8 +9,9 @@ my $build = Module::Build->new(
 	create_readme      => 1,
 	create_makefile_pl => 'traditional',
 	requires           => {
-		'Catalyst'    => 0,
-		'Data::Visitor' => 0.02,
+		'Catalyst::Runtime' => '0',
+		'Data::Visitor'     => '0.02',
+        'Module::Pluggable' => '3.01'
 	},
 );
 

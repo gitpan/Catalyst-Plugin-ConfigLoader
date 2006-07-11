@@ -1,5 +1,11 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.1   Tue Jul 11 2006
+    - remove hash merging since it is now a core behavior
+    - added C/M/V legacy shortcuts
+    - fixed debug output some
+    - switched to Module::Pluggable::Object
+
 0.09  Wed May 24 2006
     - ignore non-ref model/view/controller/component keys
 

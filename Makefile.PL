@@ -5,8 +5,9 @@ WriteMakefile
           'NAME' => 'Catalyst::Plugin::ConfigLoader',
           'VERSION_FROM' => 'lib/Catalyst/Plugin/ConfigLoader.pm',
           'PREREQ_PM' => {
-                           'Catalyst' => '0',
-                           'Data::Visitor' => '0.02'
+                           'Catalyst::Runtime' => '0',
+                           'Data::Visitor' => '0.02',
+                           'Module::Pluggable' => '3.01'
                          },
           'INSTALLDIRS' => 'site',
           'PL_FILES' => {}
