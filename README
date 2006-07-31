@@ -35,7 +35,7 @@ METHODS
     finalize_config method which walks through the loaded config hash and
     replaces any strings beginning containing "__HOME__" with the full path
     to app's home directory (i.e. "$c->path_to('')" ). You can also use
-    "__path_to('foo/bar')__" which translates to "$c->path_to('foo', 'bar')"
+    "__path_to(foo/bar)__" which translates to "$c->path_to('foo', 'bar')"
 
   get_config_path
     This method determines the path, filename prefix and file extension to
@@ -46,12 +46,20 @@ METHODS
     The order of preference is specified as:
 
     * $ENV{ MYAPP_CONFIG }
-    * "$c-"config->{ file }>
-    * "$c-"path_to( $application_prefix )>
+    * "$c->config->{ file }"
+    * "$c->path_to( $application_prefix )"
 
     If either of the first two user-specified options are directories, the
     application prefix will be added on to the end of the path.
 
+  get_config_local_suffix
+    Determines the suffix of files used to override the main config. By
+    default this value is "local", but it can be specified in the following
+    order of preference:
+
+    * $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
+    * $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
+    * "$c->config->{ config_local_suffix }"
 AUTHOR
     * Brian Cassidy <bricas@cpan.org>
 

@@ -2,14 +2,15 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
+          'PL_FILES' => {},
+          'INSTALLDIRS' => 'site',
           'NAME' => 'Catalyst::Plugin::ConfigLoader',
+          'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/Catalyst/Plugin/ConfigLoader.pm',
           'PREREQ_PM' => {
-                           'Catalyst::Runtime' => '0',
+                           'Module::Pluggable' => '3.01',
                            'Data::Visitor' => '0.02',
-                           'Module::Pluggable' => '3.01'
-                         },
-          'INSTALLDIRS' => 'site',
-          'PL_FILES' => {}
+                           'Catalyst::Runtime' => '0'
+                         }
         )
 ;

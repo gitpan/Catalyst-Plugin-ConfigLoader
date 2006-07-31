@@ -7,7 +7,7 @@ use NEXT;
 use Module::Pluggable::Object ();
 use Data::Visitor::Callback;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 =head1 NAME
 
@@ -48,6 +48,7 @@ loaded, set the C<config()> section.
 sub setup {
     my $c = shift;
     my( $path, $extension ) = $c->get_config_path;
+    my $suffix = $c->get_config_local_suffix;
 
     my $finder = Module::Pluggable::Object->new(
         search_path => [ __PACKAGE__ ],
@@ -62,7 +63,7 @@ sub setup {
             push @files, $path;
         }
         else {
-            @files = map { ( "$path.$_", "${path}_local.$_" ) } @extensions;
+            @files = map { ( "$path.$_", "${path}_${suffix}.$_" ) } @extensions;
         }
 
         for( @files ) {
@@ -94,7 +95,7 @@ ConfigLoader provides a default finalize_config method which
 walks through the loaded config hash and replaces any strings
 beginning containing C<__HOME__> with the full path to
 app's home directory (i.e. C<$c-E<gt>path_to('')> ).
-You can also use C<__path_to('foo/bar')__> which translates to
+You can also use C<__path_to(foo/bar)__> which translates to
 C<$c-E<gt>path_to('foo', 'bar')> 
 
 =cut
@@ -123,9 +124,9 @@ The order of preference is specified as:
 
 =item * C<$ENV{ MYAPP_CONFIG }>
 
-=item * C<$c->config->{ file }>
+=item * C<$c-E<gt>config-E<gt>{ file }>
 
-=item * C<$c->path_to( $application_prefix )>
+=item * C<$c-E<gt>path_to( $application_prefix )>
 
 =back
 
@@ -150,6 +151,35 @@ sub get_config_path {
     }
     
     return( $path, $extension );
+}
+
+=head2 get_config_local_suffix
+
+Determines the suffix of files used to override the main config. By default
+this value is C<local>, but it can be specified in the following order of preference:
+
+=over 4
+
+=item * C<$ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }>
+
+=item * C<$ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }>
+
+=item * C<$c-E<gt>config-E<gt>{ config_local_suffix }>
+
+
+=back
+
+=cut
+
+sub get_config_local_suffix {
+    my $c       = shift;
+    my $appname = ref $c || $c;
+    my $suffix  = $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
+        || $ENV{ Catalyst::Utils::class2env( $appname ) . '_CONFIG_LOCAL_SUFFIX' }
+        || $c->config->{ config_local_suffix }
+        || 'local';
+
+    return $suffix;
 }
 
 sub _fix_syntax {

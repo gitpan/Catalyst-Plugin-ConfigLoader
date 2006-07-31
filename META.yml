@@ -1,10 +1,12 @@
 ---
 name: Catalyst-Plugin-ConfigLoader
-version: 0.11
+version: 0.12
 author:
-  - Brian Cassidy <bricas@cpan.org>
+  - 'Brian Cassidy <bricas@cpan.org>'
 abstract: Load config files of various types
 license: perl
+resources:
+  license: http://dev.perl.org/licenses/
 requires:
   Catalyst::Runtime: 0
   Data::Visitor: 0.02
@@ -12,7 +14,7 @@ requires:
 provides:
   Catalyst::Plugin::ConfigLoader:
     file: lib/Catalyst/Plugin/ConfigLoader.pm
-    version: 0.11
+    version: 0.12
   Catalyst::Plugin::ConfigLoader::General:
     file: lib/Catalyst/Plugin/ConfigLoader/General.pm
   Catalyst::Plugin::ConfigLoader::INI:
@@ -25,4 +27,7 @@ provides:
     file: lib/Catalyst/Plugin/ConfigLoader/XML.pm
   Catalyst::Plugin::ConfigLoader::YAML:
     file: lib/Catalyst/Plugin/ConfigLoader/YAML.pm
-generated_by: Module::Build version 0.2612
+generated_by: Module::Build version 0.2801
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
