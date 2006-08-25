@@ -1,31 +1,12 @@
 Build.PL
 Changes
 lib/Catalyst/Plugin/ConfigLoader.pm
-lib/Catalyst/Plugin/ConfigLoader/General.pm
-lib/Catalyst/Plugin/ConfigLoader/INI.pm
-lib/Catalyst/Plugin/ConfigLoader/JSON.pm
-lib/Catalyst/Plugin/ConfigLoader/Perl.pm
-lib/Catalyst/Plugin/ConfigLoader/XML.pm
-lib/Catalyst/Plugin/ConfigLoader/YAML.pm
 MANIFEST
-META.yml
 t/01-use.t
 t/10-live_auto.t
 t/20-mock_load.t
-t/50-general.t
-t/51-ini.t
-t/52-json.t
-t/53-perl.t
-t/54-xml.t
-t/55-yaml.t
 t/98-pod_coverage.t
 t/99-pod.t
-t/conf/conf.general
-t/conf/conf.ini
-t/conf/conf.json
-t/conf/conf.pl
-t/conf/conf.xml
-t/conf/conf.yml
 t/lib/TestApp.pm
 t/lib/TestApp/testapp.pl
 t/lib/TestApp/Controller/Config.pm
@@ -34,3 +15,4 @@ t/mockapp/mockapp_local.pl
 
 Makefile.PL
 README
+META.yml

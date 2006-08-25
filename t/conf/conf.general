@@ -1,7 +1,0 @@
-name = TestApp
-<Component Controller::Foo>
-    foo bar
-</Component>
-<Model Baz>
-    qux xyzzy
-</Model>

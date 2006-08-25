@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.13  Fri Aug 25 2006
+    - loading code factored out into Config::Any [rataxis@cpan.org]
+      sponsored by Portugal Telecom
+
 0.12  Wed Jul 12 2006
     - made the "local" suffix overrideable
     - fixed __path_to()__ docs

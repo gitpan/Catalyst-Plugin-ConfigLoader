@@ -27,15 +27,14 @@ METHODS
     attempt to use each plugin and, once a file has been successfully
     loaded, set the "config()" section.
 
-  finalize_config
-    This method is called after the config file is loaded. It can be used to
-    implement tuning of config values that can only be done at runtime. If
-    you need to do this to properly configure any plugins, it's important to
-    load ConfigLoader before them. ConfigLoader provides a default
-    finalize_config method which walks through the loaded config hash and
-    replaces any strings beginning containing "__HOME__" with the full path
-    to app's home directory (i.e. "$c->path_to('')" ). You can also use
-    "__path_to(foo/bar)__" which translates to "$c->path_to('foo', 'bar')"
+  load_config
+    This method handles loading the configuration data into the Catalyst
+    context object. It does not return a value.
+
+  find_files
+    This method determines the potential file paths to be used for config
+    loading. It returns an array of paths (up to the filename less the
+    extension) to pass to Config::Any for loading.
 
   get_config_path
     This method determines the path, filename prefix and file extension to
@@ -60,6 +59,17 @@ METHODS
     * $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
     * $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
     * "$c->config->{ config_local_suffix }"
+
+  finalize_config
+    This method is called after the config file is loaded. It can be used to
+    implement tuning of config values that can only be done at runtime. If
+    you need to do this to properly configure any plugins, it's important to
+    load ConfigLoader before them. ConfigLoader provides a default
+    finalize_config method which walks through the loaded config hash and
+    replaces any strings beginning containing "__HOME__" with the full path
+    to app's home directory (i.e. "$c->path_to('')" ). You can also use
+    "__path_to(foo/bar)__" which translates to "$c->path_to('foo', 'bar')"
+
 AUTHOR
     * Brian Cassidy <bricas@cpan.org>
 
@@ -67,7 +77,12 @@ CONTRIBUTORS
     The following people have generously donated their time to the
     development of this module:
 
-    * David Kamholz <dkamholz@cpan.org>
+    * Joel Bernstein <rataxis@cpan.org> - Rewrite to use Config::Any
+    * David Kamholz <dkamholz@cpan.org> - Data::Visitor integration
+
+    Work to this module has been generously sponsored by:
+
+    * Portugal Telecom <http://www.sapo.pt/> - Work done by Joel Bernstein
 
 COPYRIGHT AND LICENSE
     Copyright 2006 by Brian Cassidy
@@ -77,4 +92,5 @@ COPYRIGHT AND LICENSE
 
 SEE ALSO
     * Catalyst
+    * Config::Any
 

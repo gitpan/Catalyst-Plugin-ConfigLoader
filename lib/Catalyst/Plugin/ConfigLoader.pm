@@ -3,11 +3,11 @@ package Catalyst::Plugin::ConfigLoader;
 use strict;
 use warnings;
 
+use Config::Any;
 use NEXT;
-use Module::Pluggable::Object ();
 use Data::Visitor::Callback;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 =head1 NAME
 
@@ -46,70 +46,76 @@ loaded, set the C<config()> section.
 =cut
 
 sub setup {
-    my $c = shift;
-    my( $path, $extension ) = $c->get_config_path;
-    my $suffix = $c->get_config_local_suffix;
+    my $c     = shift;
+    my @files = $c->find_files;
+    my $cfg   = Config::Any->load_files( {
+        files   => \@files, 
+        filter  => \&_fix_syntax,
+        use_ext => 1
+    } );
 
-    my $finder = Module::Pluggable::Object->new(
-        search_path => [ __PACKAGE__ ],
-        require     => 1
-    );
-
-    for my $loader ( $finder->plugins ) {
-        my @files;
-        my @extensions = $loader->extensions;
-        if( $extension ) {
-            next unless grep { $_ eq $extension } @extensions;
-            push @files, $path;
-        }
-        else {
-            @files = map { ( "$path.$_", "${path}_${suffix}.$_" ) } @extensions;
-        }
-
-        for( @files ) {
-            next unless -f $_;
-            my $config = $loader->load( $_ );
-
-            $c->log->debug( qq(Loaded Config "$_") ) if $c->debug;
-            
-            next if !$config;
-
-            _fix_syntax( $config );
-            
-            $c->config( $config );
+    # split the responses into normal and local cfg
+    my $local_suffix = $c->get_config_local_suffix;
+    my( @cfg, @localcfg );
+    for( @$cfg ) {
+        if( ( keys %$_ )[ 0 ] =~ m{ $local_suffix \. }xms ) {
+            push @localcfg, $_;
+        } else {
+            push @cfg, $_;
         }
     }
+    
+    # load all the normal cfgs, then the local cfgs last so they can override
+    # normal cfgs
+    $c->load_config( $_ ) for @cfg, @localcfg;
 
     $c->finalize_config;
-
     $c->NEXT::setup( @_ );
 }
 
-=head2 finalize_config
+=head2 load_config
 
-This method is called after the config file is loaded. It can be
-used to implement tuning of config values that can only be done
-at runtime. If you need to do this to properly configure any
-plugins, it's important to load ConfigLoader before them.
-ConfigLoader provides a default finalize_config method which
-walks through the loaded config hash and replaces any strings
-beginning containing C<__HOME__> with the full path to
-app's home directory (i.e. C<$c-E<gt>path_to('')> ).
-You can also use C<__path_to(foo/bar)__> which translates to
-C<$c-E<gt>path_to('foo', 'bar')> 
+This method handles loading the configuration data into the Catalyst
+context object. It does not return a value.
 
 =cut
 
-sub finalize_config {
+sub load_config {
+    my $c   = shift;
+    my $ref = shift;
+    
+    my( $file, $config ) = each %$ref;
+    
+    $c->config( $config );
+    $c->log->debug( qq(Loaded Config "$file") )
+        if $c->debug;
+
+    return;
+}
+
+=head2 find_files
+
+This method determines the potential file paths to be used for config loading.
+It returns an array of paths (up to the filename less the extension) to pass to
+L<Config::Any|Config::Any> for loading.
+
+=cut
+
+sub find_files {
     my $c = shift;
-    my $v = Data::Visitor::Callback->new(
-        plain_value => sub {
-            return unless defined $_;
-            s{__HOME__}{ $c->path_to( '' ) }e;
-            s{__path_to\((.+)\)__}{ $c->path_to( split( '/', $1 ) ) }e;
-        }
-    );
-    $v->visit( $c->config );
+    my( $path, $extension ) = $c->get_config_path;
+    my $suffix     = $c->get_config_local_suffix;
+    my @extensions = @{ Config::Any->extensions };
+    
+    my @files;
+    if ($extension) {
+        next unless grep { $_ eq $extension } @extensions;
+        push @files, $path, "${path}_${suffix}";
+    } else {
+        @files = map { ( "$path.$_", "${path}_${suffix}.$_" ) } @extensions;
+    }
+
+    @files;
 }
 
 =head2 get_config_path
@@ -166,7 +172,6 @@ this value is C<local>, but it can be specified in the following order of prefer
 
 =item * C<$c-E<gt>config-E<gt>{ config_local_suffix }>
 
-
 =back
 
 =cut
@@ -203,9 +208,36 @@ sub _fix_syntax {
     }
 }
 
+=head2 finalize_config
+
+This method is called after the config file is loaded. It can be
+used to implement tuning of config values that can only be done
+at runtime. If you need to do this to properly configure any
+plugins, it's important to load ConfigLoader before them.
+ConfigLoader provides a default finalize_config method which
+walks through the loaded config hash and replaces any strings
+beginning containing C<__HOME__> with the full path to
+app's home directory (i.e. C<$c-E<gt>path_to('')> ).
+You can also use C<__path_to(foo/bar)__> which translates to
+C<$c-E<gt>path_to('foo', 'bar')> 
+
+=cut
+
+sub finalize_config {
+    my $c = shift;
+    my $v = Data::Visitor::Callback->new(
+        plain_value => sub {
+            return unless defined $_;
+            s{__HOME__}{ $c->path_to( '' ) }e;
+            s{__path_to\((.+)\)__}{ $c->path_to( split( '/', $1 ) ) }e;
+        }
+    );
+    $v->visit( $c->config );
+}
+
 =head1 AUTHOR
 
-=over 4 
+=over 4
 
 =item * Brian Cassidy E<lt>bricas@cpan.orgE<gt>
 
@@ -218,7 +250,17 @@ development of this module:
 
 =over 4
 
-=item * David Kamholz E<lt>dkamholz@cpan.orgE<gt>
+=item * Joel Bernstein E<lt>rataxis@cpan.orgE<gt> - Rewrite to use L<Config::Any>
+
+=item * David Kamholz E<lt>dkamholz@cpan.orgE<gt> - L<Data::Visitor> integration
+
+=back
+
+Work to this module has been generously sponsored by: 
+
+=over 4
+
+=item * Portugal Telecom L<http://www.sapo.pt/> - Work done by Joel Bernstein
 
 =back
 
@@ -234,6 +276,8 @@ it under the same terms as Perl itself.
 =over 4 
 
 =item * L<Catalyst>
+
+=item * L<Config::Any>
 
 =back
 

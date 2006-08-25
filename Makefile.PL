@@ -8,8 +8,8 @@ WriteMakefile
           'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/Catalyst/Plugin/ConfigLoader.pm',
           'PREREQ_PM' => {
-                           'Module::Pluggable' => '3.01',
                            'Data::Visitor' => '0.02',
+                           'Config::Any' => '0.04',
                            'Catalyst::Runtime' => '0'
                          }
         )
