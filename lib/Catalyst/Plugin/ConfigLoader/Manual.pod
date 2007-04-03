@@ -1,0 +1,171 @@
+=head1 NAME 
+
+Catalyst::Plugin::ConfigLoader::Manual - Guide to using the ConfigLoader plugin
+
+=head1 BASIC USAGE
+
+    package MyApp;
+    
+    use Catalyst qw( ConfigLoader ... );
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 4
+
+=item * C<MYAPP_CONFIG> - specific config file to load for "MyApp"
+
+=item * C<CATALYST_CONFIG_LOCAL_SUFFIX> - global suffix for extra config files
+
+=item * C<MYAPP_CONFIG_LOCAL_SUFFIX> - suffix specifically for "MyApp"
+
+=back
+
+=head1 CONFIG FORMATS
+
+=head2 Config::General
+
+=head3 Extensions
+
+=over 4
+
+=item * cnf
+
+=item * conf
+
+=back
+
+=head3 Example Config
+
+    name = TestApp
+    <Component Controller::Foo>
+        foo bar
+    </Component>
+    <Model Baz>
+        qux xyzzy
+    </Model>
+
+=head2 INI
+
+=head3 Extensions
+
+=over 4
+
+=item * ini
+
+=back
+
+=head3 Example Config
+
+    name=TestApp
+    
+    [Controller::Foo]
+    foo=bar
+    
+    [Model::Baz]
+    qux=xyzzy
+
+=head2 JSON
+
+=head3 Extensions
+
+=over 4
+
+=item * jsn
+
+=item * json
+
+=back
+
+=head3 Example Config
+
+    {
+        "name": "TestApp",
+        "Controller::Foo": {
+            "foo": "bar"
+        },
+        "Model::Baz": {
+            "qux": "xyzzy"
+        }
+    }
+
+=head2 Perl
+
+=head3 Extensions
+
+=over 4
+
+=item * pl
+
+=item * perl
+
+=back
+
+=head3 Example Config
+
+    {
+        name => 'TestApp',
+        'Controller::Foo' => {
+            foo => 'bar'
+        },
+        'Model::Baz' => {
+            qux => 'xyzzy'
+        }
+    }
+
+=head2 XML
+
+=head3 Extensions
+
+=over 4
+
+=item * xml
+
+=back
+
+=head3 Example Config
+
+    <config>
+        <name>TestApp</name>
+        <component name="Controller::Foo">
+            <foo>bar</foo>
+        </component>
+        <model name="Baz">
+            <qux>xyzzy</qux>
+        </model>
+    </config>
+
+=head2 YAML
+
+=head3 Extensions
+
+=over 4
+
+=item * yml
+
+=item * yaml
+
+=back
+
+=head3 Example Config
+
+    ---
+    name: TestApp
+    Controller::Foo:
+        foo: bar
+    Model::Baz:
+        qux: xyzzy
+
+=head1 COOKBOOK
+
+=head2 Configuring a Catalyst::Model::DBIC::Schema model from a YAML config
+
+    Model::MyModel:
+      schema_class: MyApp::MySchema
+        connect_info:
+        - dbi:SQLite:myapp.db
+        - ''
+        - ''
+        - AutoCommit: 1 
+
+=cut
+

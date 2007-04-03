@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.14  Tue Apr 03 2007
+    - switch to Module::Install
+    - added a user manual
+
 0.13  Fri Aug 25 2006
     - loading code factored out into Config::Any [rataxis@cpan.org]
       sponsored by Portugal Telecom

@@ -7,7 +7,7 @@ use Config::Any;
 use NEXT;
 use Data::Visitor::Callback;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 =head1 NAME
 
@@ -237,11 +237,7 @@ sub finalize_config {
 
 =head1 AUTHOR
 
-=over 4
-
-=item * Brian Cassidy E<lt>bricas@cpan.orgE<gt>
-
-=back
+Brian Cassidy E<lt>bricas@cpan.orgE<gt>
 
 =head1 CONTRIBUTORS
 
@@ -266,7 +262,7 @@ Work to this module has been generously sponsored by:
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006 by Brian Cassidy
+Copyright 2007 by Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
@@ -276,6 +272,8 @@ it under the same terms as Perl itself.
 =over 4 
 
 =item * L<Catalyst>
+
+=item * L<Catalyst::Plugin::ConfigLoader::Manual>
 
 =item * L<Config::Any>
 
