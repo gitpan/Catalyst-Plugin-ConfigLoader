@@ -1,9 +1,9 @@
-use inc::Module::Install;
+use inc::Module::Install 0.65;
 
 name 'Catalyst-Plugin-ConfigLoader';
 all_from 'lib/Catalyst/Plugin/ConfigLoader.pm';
 
-requires 'Catalyst';
+requires 'Catalyst::Runtime';
 requires 'Data::Visitor' => '0.02';
 requires 'Config::Any'   => '0.04';
 

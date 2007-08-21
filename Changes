@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.15  Tue Aug 21 2007
+    - Allow multiple __HOME__ and __path_to()__ replaces in one string
+      (Greg Sheard)
+
 0.14  Tue Apr 03 2007
     - switch to Module::Install
     - added a user manual

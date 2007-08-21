@@ -7,7 +7,7 @@ use Config::Any;
 use NEXT;
 use Data::Visitor::Callback;
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 =head1 NAME
 
@@ -228,8 +228,8 @@ sub finalize_config {
     my $v = Data::Visitor::Callback->new(
         plain_value => sub {
             return unless defined $_;
-            s{__HOME__}{ $c->path_to( '' ) }e;
-            s{__path_to\((.+)\)__}{ $c->path_to( split( '/', $1 ) ) }e;
+            s{__HOME__}{ $c->path_to( '' ) }eg;
+            s{__path_to\((.+?)\)__}{ $c->path_to( split( '/', $1 ) ) }eg;
         }
     );
     $v->visit( $c->config );
