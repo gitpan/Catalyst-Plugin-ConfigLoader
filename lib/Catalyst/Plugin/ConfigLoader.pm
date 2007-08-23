@@ -6,8 +6,9 @@ use warnings;
 use Config::Any;
 use NEXT;
 use Data::Visitor::Callback;
+use Catalyst::Utils ();
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 =head1 NAME
 
@@ -23,13 +24,14 @@ Catalyst::Plugin::ConfigLoader - Load config files of various types
     
     # by default myapp.* will be loaded
     # you can specify a file if you'd like
-    __PACKAGE__->config( file => 'config.yaml' );    
+    __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );    
 
 =head1 DESCRIPTION
 
 This module will attempt to load find and load a configuration
 file of various types. Currently it supports YAML, JSON, XML,
-INI and Perl formats.
+INI and Perl formats. Special configuration for a particular driver format can
+be stored in C<MyApp-E<gt>config-E<gt>{ 'Plugin::ConfigLoader' }-E<gt>{ driver }>.
 
 To support the distinction between development and production environments,
 this module will also attemp to load a local config (e.g. myapp_local.yaml)
@@ -49,9 +51,10 @@ sub setup {
     my $c     = shift;
     my @files = $c->find_files;
     my $cfg   = Config::Any->load_files( {
-        files   => \@files, 
-        filter  => \&_fix_syntax,
-        use_ext => 1
+        files       => \@files, 
+        filter      => \&_fix_syntax,
+        use_ext     => 1,
+        driver_args => $c->config->{'Plugin::ConfigLoader'}->{driver} || {},
     } );
 
     # split the responses into normal and local cfg
@@ -130,7 +133,9 @@ The order of preference is specified as:
 
 =item * C<$ENV{ MYAPP_CONFIG }>
 
-=item * C<$c-E<gt>config-E<gt>{ file }>
+=item * C<$ENV{ CATALYST_CONFIG }>
+
+=item * C<$c-E<gt>config-E<gt>{ 'Plugin::ConfigLoader' }-E>gt>{ file }>
 
 =item * C<$c-E<gt>path_to( $application_prefix )>
 
@@ -139,14 +144,24 @@ The order of preference is specified as:
 If either of the first two user-specified options are directories, the
 application prefix will be added on to the end of the path.
 
+DEPRECATION NOTICE: C<$c-E<gt>config-E<gt>{ file }> is deprecated
+and will be removed in the next release.
+
 =cut
 
 sub get_config_path {
     my $c       = shift;
+
+    # deprecation notice
+    if( exists $c->config->{ file } ) {
+        $c->log->warn( q("file" config parameter has been deprecated in favor of "$c->config->{ 'Plugin::ConfigLoader' }->{ file }") );
+    }
+
     my $appname = ref $c || $c;
     my $prefix  = Catalyst::Utils::appprefix( $appname );
-    my $path    = $ENV{ Catalyst::Utils::class2env( $appname ) . '_CONFIG' }
-        || $c->config->{ file }
+    my $path    = Catalyst::Utils::env_value( $c, 'CONFIG' )
+        || $c->config->{ 'Plugin::ConfigLoader' }->{ file }
+        || $c->config->{ file } # to be removed next release
         || $c->path_to( $prefix );
 
     my( $extension ) = ( $path =~ m{\.(.{1,4})$} );
@@ -166,22 +181,31 @@ this value is C<local>, but it can be specified in the following order of prefer
 
 =over 4
 
-=item * C<$ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }>
-
 =item * C<$ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }>
 
-=item * C<$c-E<gt>config-E<gt>{ config_local_suffix }>
+=item * C<$ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }>
+
+=item * C<$c-E<gt>config-E<gt>{ 'Plugin::ConfigLoader' }-E<gt>{ config_local_suffix }>
 
 =back
+
+DEPRECATION NOTICE: C<$c-E<gt>config-E<gt>{ config_local_suffix }> is deprecated
+and will be removed in the next release.
 
 =cut
 
 sub get_config_local_suffix {
     my $c       = shift;
+
+    # deprecation notice
+    if( exists $c->config->{ config_local_suffix } ) {
+        $c->log->warn( q("config_local_suffix" config parameter has been deprecated in favor of "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }") );
+    }
+
     my $appname = ref $c || $c;
-    my $suffix  = $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
-        || $ENV{ Catalyst::Utils::class2env( $appname ) . '_CONFIG_LOCAL_SUFFIX' }
-        || $c->config->{ config_local_suffix }
+    my $suffix  = Catalyst::Utils::env_value( $c, 'CONFIG_LOCAL_SUFFIX' )
+        || $c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }
+        || $c->config->{ config_local_suffix } # to be remove in the next release
         || 'local';
 
     return $suffix;
@@ -215,11 +239,8 @@ used to implement tuning of config values that can only be done
 at runtime. If you need to do this to properly configure any
 plugins, it's important to load ConfigLoader before them.
 ConfigLoader provides a default finalize_config method which
-walks through the loaded config hash and replaces any strings
-beginning containing C<__HOME__> with the full path to
-app's home directory (i.e. C<$c-E<gt>path_to('')> ).
-You can also use C<__path_to(foo/bar)__> which translates to
-C<$c-E<gt>path_to('foo', 'bar')> 
+walks through the loaded config hash and calls the C<config_substitutions>
+sub on any string.
 
 =cut
 
@@ -228,12 +249,54 @@ sub finalize_config {
     my $v = Data::Visitor::Callback->new(
         plain_value => sub {
             return unless defined $_;
-            s{__HOME__}{ $c->path_to( '' ) }eg;
-            s{__path_to\((.+?)\)__}{ $c->path_to( split( '/', $1 ) ) }eg;
+            $c->config_substitutions( $_ );
         }
     );
     $v->visit( $c->config );
 }
+
+=head2 config_substitutions( $value )
+
+This method substitutes macros found with calls to a function. There are three
+default macros:
+
+=over 4
+
+=item * C<__HOME__> - replaced with C<$c-E<gt>path_to('')>
+
+=item * C<__path_to(foo/bar)__> - replaced with C<$c-E<gt>path_to('foo/bar')>
+
+=item * C<__literal(__FOO__)__> - leaves __FOO__ alone (allows you to use
+C<__DATA__> as a config value, for example)
+
+=back
+
+The parameter list is split on comma (C<,>). You can override this method to
+do your own string munging, or you can define your own macros in
+C<MyApp-E<gt>config-E<gt>{ 'Plugin::ConfigLoader' }-E<gt>{ substitutions }>.
+Example:
+
+    MyApp->config->{ 'Plugin::ConfigLoader' }->{ substitutions } = {
+        baz => sub { my $c = shift; qux( @_ ); }
+    }
+
+The above will respond to C<__baz(x,y)__> in config strings.
+
+=cut
+
+sub config_substitutions {
+    my $c = shift;
+    my $subs = $c->config->{ 'Plugin::ConfigLoader' }->{ substitutions } || {};
+    $subs->{ HOME } ||= sub { shift->path_to( '' ); };
+    $subs->{ path_to } ||= sub { shift->path_to( @_ ); };
+    $subs->{ literal } ||= sub { return $_[ 1 ]; };
+    my $subsre = join( '|', keys %$subs );
+
+    for ( @_ ) {
+        s{__($subsre)(?:\((.+?)\))?__}{ $subs->{ $1 }->( $c, $2 ? split( /,/, $2 ) : () ) }eg;
+    }
+}
+
 
 =head1 AUTHOR
 

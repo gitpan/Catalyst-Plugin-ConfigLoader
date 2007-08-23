@@ -1,5 +1,23 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.16  Thu Aug 23 2007
+    - separated out the macro expansion code into config_substitutions()
+      (Jason Kohles)
+    - allow users to specify their own macros in
+      MyApp->config->{ substitutions } (Johnathan Rockway)
+    - pass special constructor arguments to Config::Any. Requires Config::Any
+      0.08 (Gareth Kirwan)
+
+    [DEPRECATION NOTICE]
+    - the "file" and "config_local_suffix" config keys are now to be explicitly
+      set under the Plugin::ConfigLoader key. Support for these keys will be
+      removed in the next release.
+
+    [THINGS THAT MAY BREAK YOUR CODE]
+    - use Catalyst::Utils::env_value() to get $ENV values. This means that
+      MYAPP_* is of higher precedence than CATALYST_* -- this differs from
+      the behavior of older releases.
+
 0.15  Tue Aug 21 2007
     - Allow multiple __HOME__ and __path_to()__ replaces in one string
       (Greg Sheard)

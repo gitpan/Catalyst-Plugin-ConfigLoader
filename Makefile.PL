@@ -5,7 +5,7 @@ all_from 'lib/Catalyst/Plugin/ConfigLoader.pm';
 
 requires 'Catalyst::Runtime';
 requires 'Data::Visitor' => '0.02';
-requires 'Config::Any'   => '0.04';
+requires 'Config::Any'   => '0.08';
 
 requires 'Test::More';
 

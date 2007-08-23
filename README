@@ -10,12 +10,13 @@ SYNOPSIS
     
         # by default myapp.* will be loaded
         # you can specify a file if you'd like
-        __PACKAGE__->config( file => 'config.yaml' );    
+        __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );    
 
 DESCRIPTION
     This module will attempt to load find and load a configuration file of
     various types. Currently it supports YAML, JSON, XML, INI and Perl
-    formats.
+    formats. Special configuration for a particular driver format can be
+    stored in "MyApp->config->{ 'Plugin::ConfigLoader' }->{ driver }".
 
     To support the distinction between development and production
     environments, this module will also attemp to load a local config (e.g.
@@ -45,20 +46,27 @@ METHODS
     The order of preference is specified as:
 
     * $ENV{ MYAPP_CONFIG }
-    * "$c->config->{ file }"
+    * $ENV{ CATALYST_CONFIG }
+    * "$c->config->{ 'Plugin::ConfigLoader' }-E"gt>{ file }>
     * "$c->path_to( $application_prefix )"
 
     If either of the first two user-specified options are directories, the
     application prefix will be added on to the end of the path.
+
+    DEPRECATION NOTICE: "$c->config->{ file }" is deprecated and will be
+    removed in the next release.
 
   get_config_local_suffix
     Determines the suffix of files used to override the main config. By
     default this value is "local", but it can be specified in the following
     order of preference:
 
-    * $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
     * $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
-    * "$c->config->{ config_local_suffix }"
+    * $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
+    * "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }"
+
+    DEPRECATION NOTICE: "$c->config->{ config_local_suffix }" is deprecated
+    and will be removed in the next release.
 
   finalize_config
     This method is called after the config file is loaded. It can be used to
@@ -66,12 +74,29 @@ METHODS
     you need to do this to properly configure any plugins, it's important to
     load ConfigLoader before them. ConfigLoader provides a default
     finalize_config method which walks through the loaded config hash and
-    replaces any strings beginning containing "__HOME__" with the full path
-    to app's home directory (i.e. "$c->path_to('')" ). You can also use
-    "__path_to(foo/bar)__" which translates to "$c->path_to('foo', 'bar')"
+    calls the "config_substitutions" sub on any string.
+
+  config_substitutions( $value )
+    This method substitutes macros found with calls to a function. There are
+    three default macros:
+
+    * "__HOME__" - replaced with "$c->path_to('')"
+    * "__path_to(foo/bar)__" - replaced with "$c->path_to('foo/bar')"
+    * "__literal(__FOO__)__" - leaves __FOO__ alone (allows you to use
+    "__DATA__" as a config value, for example)
+
+    The parameter list is split on comma (","). You can override this method
+    to do your own string munging, or you can define your own macros in
+    "MyApp->config->{ 'Plugin::ConfigLoader' }->{ substitutions }". Example:
+
+        MyApp->config->{ 'Plugin::ConfigLoader' }->{ substitutions } = {
+            baz => sub { my $c = shift; qux( @_ ); }
+        }
+
+    The above will respond to "__baz(x,y)__" in config strings.
 
 AUTHOR
-    * Brian Cassidy <bricas@cpan.org>
+    Brian Cassidy <bricas@cpan.org>
 
 CONTRIBUTORS
     The following people have generously donated their time to the
