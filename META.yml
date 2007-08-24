@@ -13,8 +13,8 @@ no_index:
     - inc
     - t
 requires: 
-  Catalyst::Runtime: 0
+  Catalyst::Runtime: 5.7008
   Config::Any: 0.08
   Data::Visitor: 0.02
   Test::More: 0
-version: 0.16
+version: 0.17

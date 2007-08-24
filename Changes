@@ -1,5 +1,11 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.17  Fri Aug 24 2007
+    - Requires Catalyst::Runtime 5.7008 for env_value()
+
+    [NOTE]
+    - Deprecation notices will hold for another release
+
 0.16  Thu Aug 23 2007
     - separated out the macro expansion code into config_substitutions()
       (Jason Kohles)
