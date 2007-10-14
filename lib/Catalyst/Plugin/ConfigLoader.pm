@@ -8,7 +8,7 @@ use NEXT;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 =head1 NAME
 

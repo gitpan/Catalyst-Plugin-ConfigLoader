@@ -161,7 +161,7 @@ Catalyst::Plugin::ConfigLoader::Manual - Guide to using the ConfigLoader plugin
 
     Model::MyModel:
       schema_class: MyApp::MySchema
-        connect_info:
+      connect_info:
         - dbi:SQLite:myapp.db
         - ''
         - ''

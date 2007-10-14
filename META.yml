@@ -17,4 +17,4 @@ requires:
   Config::Any: 0.08
   Data::Visitor: 0.02
   Test::More: 0
-version: 0.17
+version: 0.18

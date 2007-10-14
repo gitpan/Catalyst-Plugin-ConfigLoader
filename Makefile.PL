@@ -1,4 +1,8 @@
-use inc::Module::Install 0.65;
+use inc::Module::Install 0.67;
+
+if( -e 'MANIFEST.SKIP' ) {
+    system( 'pod2text lib/Catalyst/Plugin/ConfigLoader.pm > README' );
+}
 
 name 'Catalyst-Plugin-ConfigLoader';
 all_from 'lib/Catalyst/Plugin/ConfigLoader.pm';
