@@ -6,7 +6,7 @@ use warnings;
 use base qw( Catalyst::Controller );
 
 sub index : Private {
-    my( $self, $c ) = @_;
+    my ( $self, $c ) = @_;
     $c->res->output( $self->{ foo } );
 }
 

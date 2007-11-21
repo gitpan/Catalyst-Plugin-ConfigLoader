@@ -19,6 +19,7 @@ README
 t/01-use.t
 t/10-live_auto.t
 t/20-mock_load.t
+t/21-mock_load_env.t
 t/98-pod_coverage.t
 t/99-pod.t
 t/lib/TestApp.pm

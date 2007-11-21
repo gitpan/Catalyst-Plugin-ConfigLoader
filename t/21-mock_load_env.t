@@ -3,7 +3,8 @@ package MockApp;
 use Test::More tests => 9;
 
 use Cwd;
-$ENV{ CATALYST_HOME } = cwd . '/t/mockapp';
+$ENV{ CATALYST_HOME }  = cwd . '/t/mockapp';
+$ENV{ MOCKAPP_CONFIG } = $ENV{ CATALYST_HOME } . '/mockapp.pl';
 
 use_ok( 'Catalyst', qw( ConfigLoader ) );
 

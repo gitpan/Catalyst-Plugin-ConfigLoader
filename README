@@ -47,7 +47,7 @@ METHODS
 
     * $ENV{ MYAPP_CONFIG }
     * $ENV{ CATALYST_CONFIG }
-    * "$c->config->{ 'Plugin::ConfigLoader' }-E"gt>{ file }>
+    * "$c->config->{ 'Plugin::ConfigLoader' }->{ file }"
     * "$c->path_to( $application_prefix )"
 
     If either of the first two user-specified options are directories, the
