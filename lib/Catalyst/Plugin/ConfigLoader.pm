@@ -8,7 +8,7 @@ use NEXT;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 
 =head1 NAME
 
@@ -25,6 +25,15 @@ Catalyst::Plugin::ConfigLoader - Load config files of various types
     # by default myapp.* will be loaded
     # you can specify a file if you'd like
     __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );    
+
+  In the file, assuming it's in YAML format:
+
+    foo: bar
+
+  Accessible through the context object, or the class itself
+
+   $c->config->{foo}    # bar
+   MyApp->config->{foo} # bar
 
 =head1 DESCRIPTION
 
@@ -58,22 +67,24 @@ sub setup {
                 || {},
         }
     );
+    # map the array of hashrefs to a simple hash
+    my %configs = map { %$_ } @$cfg;
 
     # split the responses into normal and local cfg
     my $local_suffix = $c->get_config_local_suffix;
-    my ( @cfg, @localcfg );
-    for ( @$cfg ) {
-        if ( ( keys %$_ )[ 0 ] =~ m{ $local_suffix \. }xms ) {
-            push @localcfg, $_;
+    my ( @main, @locals );
+    for ( sort keys %configs ) {
+        if ( m{$local_suffix\.}ms ) {
+            push @locals, $_;
         }
         else {
-            push @cfg, $_;
+            push @main, $_;
         }
     }
 
     # load all the normal cfgs, then the local cfgs last so they can override
     # normal cfgs
-    $c->load_config( $_ ) for @cfg, @localcfg;
+    $c->load_config( { $_ => $configs{ $_ } } ) for @main, @locals;
 
     $c->finalize_config;
     $c->NEXT::setup( @_ );
@@ -115,14 +126,14 @@ sub find_files {
 
     my @files;
     if ( $extension ) {
-        next unless grep { $_ eq $extension } @extensions;
+        die "Unable to handle files with the extension '${extension}'"
+            unless grep { $_ eq $extension } @extensions;
         ( my $local = $path ) =~ s{\.$extension}{_$suffix.$extension};
         push @files, $path, $local;
     }
     else {
         @files = map { ( "$path.$_", "${path}_${suffix}.$_" ) } @extensions;
     }
-
     @files;
 }
 
@@ -149,27 +160,16 @@ The order of preference is specified as:
 If either of the first two user-specified options are directories, the
 application prefix will be added on to the end of the path.
 
-DEPRECATION NOTICE: C<$c-E<gt>config-E<gt>{ file }> is deprecated
-and will be removed in the next release.
-
 =cut
 
 sub get_config_path {
     my $c = shift;
 
-    # deprecation notice
-    if ( exists $c->config->{ file } ) {
-        $c->log->warn(
-            q(*** "file" config parameter has been deprecated in favor of "$c->config->{ 'Plugin::ConfigLoader' }->{ file }")
-        );
-        sleep( 3 );
-    }
 
     my $appname = ref $c || $c;
     my $prefix  = Catalyst::Utils::appprefix( $appname );
     my $path    = Catalyst::Utils::env_value( $c, 'CONFIG' )
         || $c->config->{ 'Plugin::ConfigLoader' }->{ file }
-        || $c->config->{ file }    # to be removed next release
         || $c->path_to( $prefix );
 
     my ( $extension ) = ( $path =~ m{\.(.{1,4})$} );
@@ -197,27 +197,14 @@ this value is C<local>, but it can be specified in the following order of prefer
 
 =back
 
-DEPRECATION NOTICE: C<$c-E<gt>config-E<gt>{ config_local_suffix }> is deprecated
-and will be removed in the next release.
-
 =cut
 
 sub get_config_local_suffix {
     my $c = shift;
 
-    # deprecation notice
-    if ( exists $c->config->{ config_local_suffix } ) {
-        $c->log->warn(
-            q(*** "config_local_suffix" config parameter has been deprecated in favor of "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }")
-        );
-        sleep( 3 );
-    }
-
     my $appname = ref $c || $c;
     my $suffix = Catalyst::Utils::env_value( $c, 'CONFIG_LOCAL_SUFFIX' )
         || $c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }
-        || $c->config
-        ->{ config_local_suffix }    # to be remove in the next release
         || 'local';
 
     return $suffix;
@@ -335,7 +322,7 @@ Work to this module has been generously sponsored by:
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2007 by Brian Cassidy
+Copyright 2008 by Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 

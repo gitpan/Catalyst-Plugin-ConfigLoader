@@ -1,5 +1,13 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.20  Fri May 02 2008
+    - sort configs by filename for loading (RT #31498)
+    - updated pod with new example
+    - die() instead of silently skip files with extensions we can't handle
+
+    [THINGS THAT MAY BREAK YOUR CODE]
+    - deprecation notices removed, support for old keys removed.
+
 0.19  Wed Nov 21 2007
     - fixed suffix appending to explicit config paths
 

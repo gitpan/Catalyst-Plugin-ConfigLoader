@@ -12,6 +12,15 @@ SYNOPSIS
         # you can specify a file if you'd like
         __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );    
 
+      In the file, assuming it's in YAML format:
+
+        foo: bar
+
+      Accessible through the context object, or the class itself
+
+       $c->config->{foo}    # bar
+       MyApp->config->{foo} # bar
+
 DESCRIPTION
     This module will attempt to load find and load a configuration file of
     various types. Currently it supports YAML, JSON, XML, INI and Perl
@@ -53,9 +62,6 @@ METHODS
     If either of the first two user-specified options are directories, the
     application prefix will be added on to the end of the path.
 
-    DEPRECATION NOTICE: "$c->config->{ file }" is deprecated and will be
-    removed in the next release.
-
   get_config_local_suffix
     Determines the suffix of files used to override the main config. By
     default this value is "local", but it can be specified in the following
@@ -64,9 +70,6 @@ METHODS
     * $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
     * $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
     * "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }"
-
-    DEPRECATION NOTICE: "$c->config->{ config_local_suffix }" is deprecated
-    and will be removed in the next release.
 
   finalize_config
     This method is called after the config file is loaded. It can be used to
@@ -110,7 +113,7 @@ CONTRIBUTORS
     * Portugal Telecom <http://www.sapo.pt/> - Work done by Joel Bernstein
 
 COPYRIGHT AND LICENSE
-    Copyright 2007 by Brian Cassidy
+    Copyright 2008 by Brian Cassidy
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
