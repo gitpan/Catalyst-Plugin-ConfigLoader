@@ -168,5 +168,13 @@ Catalyst::Plugin::ConfigLoader::Manual - Guide to using the ConfigLoader plugin
         - ''
         - AutoCommit: 1 
 
+=head2 Converting your existing config to Config::General format
+
+As of L<Catalyst::Devel> 1.07, a newly created application will use
+L<Config::General> for configuration. If you wish to convert your existing
+config, run the following one-liner (replacing MyApp with your app's name):
+
+    perl -Ilib -MMyApp -MConfig::General -e 'Config::General->new->save_file("myapp.conf", MyApp->config);'
+
 =cut
 

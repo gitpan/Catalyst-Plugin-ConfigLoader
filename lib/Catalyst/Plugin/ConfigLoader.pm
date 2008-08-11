@@ -8,7 +8,7 @@ use NEXT;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 =head1 NAME
 
@@ -41,6 +41,15 @@ This module will attempt to load find and load a configuration
 file of various types. Currently it supports YAML, JSON, XML,
 INI and Perl formats. Special configuration for a particular driver format can
 be stored in C<MyApp-E<gt>config-E<gt>{ 'Plugin::ConfigLoader' }-E<gt>{ driver }>.
+For example, to pass arguments to L<Config::General>, use the following:
+
+    __PACKAGE__->config( 'Plugin::ConfigLoader' => {
+        driver => {
+            'General' => { -LowerCaseNames => 1 }
+        }
+    } );
+
+See L<Config::Any>'s C<driver_args> parameter for more information.
 
 To support the distinction between development and production environments,
 this module will also attemp to load a local config (e.g. myapp_local.yaml)
@@ -218,7 +227,7 @@ sub _fix_syntax {
             values => delete $config->{ lc $_ } || delete $config->{ $_ }
         },
         grep { ref $config->{ lc $_ } || ref $config->{ $_ } }
-            qw( Component Model M View V Controller C )
+            qw( Component Model M View V Controller C Plugin )
     );
 
     foreach my $comp ( @components ) {

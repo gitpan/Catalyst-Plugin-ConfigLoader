@@ -1,6 +1,6 @@
 package MockApp;
 
-use Test::More tests => 9;
+use Test::More tests => 10;
 
 use Cwd;
 $ENV{ CATALYST_HOME } = cwd . '/t/mockapp';
@@ -21,3 +21,4 @@ is( __PACKAGE__->config->{ 'Model::Baz' }->{ another },  'new key' );
 is( __PACKAGE__->config->{ 'view' },                     'View::TT::New' );
 is( __PACKAGE__->config->{ 'foo_sub' },                  'x-y' );
 is( __PACKAGE__->config->{ 'literal_macro' },            '__DATA__' );
+is( __PACKAGE__->config->{ 'Plugin::Zot' }->{ zoot },    'zooot');

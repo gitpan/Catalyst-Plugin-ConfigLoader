@@ -1,5 +1,12 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.21  Mon Aug 11 2008
+    - add a cookbook entry for converting an existing config to
+      Config::General format
+    - fix up pod to explain in more detail how to pass options to each
+      driver class (Sergio Salvi)
+    - add nice syntax for plugins to match models/views/controllers (ilmari)
+
 0.20  Fri May 02 2008
     - sort configs by filename for loading (RT #31498)
     - updated pod with new example

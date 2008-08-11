@@ -25,7 +25,16 @@ DESCRIPTION
     This module will attempt to load find and load a configuration file of
     various types. Currently it supports YAML, JSON, XML, INI and Perl
     formats. Special configuration for a particular driver format can be
-    stored in "MyApp->config->{ 'Plugin::ConfigLoader' }->{ driver }".
+    stored in "MyApp->config->{ 'Plugin::ConfigLoader' }->{ driver }". For
+    example, to pass arguments to Config::General, use the following:
+
+        __PACKAGE__->config( 'Plugin::ConfigLoader' => {
+            driver => {
+                'General' => { -LowerCaseNames => 1 }
+            }
+        } );
+
+    See Config::Any's "driver_args" parameter for more information.
 
     To support the distinction between development and production
     environments, this module will also attemp to load a local config (e.g.

@@ -1,4 +1,4 @@
-use inc::Module::Install 0.67;
+use inc::Module::Install 0.77;
 
 if ( -e 'MANIFEST.SKIP' ) {
     system( 'pod2text lib/Catalyst/Plugin/ConfigLoader.pm > README' );
