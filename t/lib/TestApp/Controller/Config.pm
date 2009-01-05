@@ -10,4 +10,9 @@ sub index : Private {
     $c->res->output( $self->{ foo } );
 }
 
+sub appconfig : Global {
+    my ( $self, $c, $var ) = @_;
+    $c->res->body( $c->config->{ $var } );
+}
+
 1;

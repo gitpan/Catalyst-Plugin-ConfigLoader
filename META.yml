@@ -19,7 +19,8 @@ requires:
   Catalyst::Runtime: 5.7008
   Config::Any: 0.08
   Data::Visitor: 0.02
+  MRO::Compat: 0.09
   perl: 5.8.0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.21
+version: 0.22

@@ -4,11 +4,11 @@ use strict;
 use warnings;
 
 use Config::Any;
-use NEXT;
+use MRO::Compat;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 =head1 NAME
 
@@ -96,7 +96,7 @@ sub setup {
     $c->load_config( { $_ => $configs{ $_ } } ) for @main, @locals;
 
     $c->finalize_config;
-    $c->NEXT::setup( @_ );
+    $c->next::method( @_ );
 }
 
 =head2 load_config
@@ -331,7 +331,7 @@ Work to this module has been generously sponsored by:
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2008 by Brian Cassidy
+Copyright 2006-2009 by Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 

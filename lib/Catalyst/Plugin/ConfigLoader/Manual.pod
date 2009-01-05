@@ -176,5 +176,16 @@ config, run the following one-liner (replacing MyApp with your app's name):
 
     perl -Ilib -MMyApp -MConfig::General -e 'Config::General->new->save_file("myapp.conf", MyApp->config);'
 
+=head2 Using UTF-8 strings in a Config::General file
+
+If you have UTF-8 strings in your L<Config::General>-based config file, you
+should add the following config information to MyApp.pm:
+
+    __PACKAGE__->config( 'Plugin::ConfigLoader' => {
+        driver => {
+            'General' => { -UTF8 => 1 },
+        }
+    } );
+
 =cut
 

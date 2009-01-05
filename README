@@ -3,12 +3,12 @@ NAME
 
 SYNOPSIS
         package MyApp;
-    
-        # ConfigLoader should be first in your list so
+        
+    # ConfigLoader should be first in your list so
         # other plugins can get the config information
         use Catalyst qw( ConfigLoader ... );
-    
-        # by default myapp.* will be loaded
+        
+    # by default myapp.* will be loaded
         # you can specify a file if you'd like
         __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );    
 
@@ -63,10 +63,13 @@ METHODS
 
     The order of preference is specified as:
 
-    * $ENV{ MYAPP_CONFIG }
-    * $ENV{ CATALYST_CONFIG }
-    * "$c->config->{ 'Plugin::ConfigLoader' }->{ file }"
-    * "$c->path_to( $application_prefix )"
+    *   $ENV{ MYAPP_CONFIG }
+
+    *   $ENV{ CATALYST_CONFIG }
+
+    *   "$c->config->{ 'Plugin::ConfigLoader' }->{ file }"
+
+    *   "$c->path_to( $application_prefix )"
 
     If either of the first two user-specified options are directories, the
     application prefix will be added on to the end of the path.
@@ -76,9 +79,11 @@ METHODS
     default this value is "local", but it can be specified in the following
     order of preference:
 
-    * $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
-    * $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
-    * "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }"
+    *   $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
+
+    *   $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
+
+    *   "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }"
 
   finalize_config
     This method is called after the config file is loaded. It can be used to
@@ -92,10 +97,12 @@ METHODS
     This method substitutes macros found with calls to a function. There are
     three default macros:
 
-    * "__HOME__" - replaced with "$c->path_to('')"
-    * "__path_to(foo/bar)__" - replaced with "$c->path_to('foo/bar')"
-    * "__literal(__FOO__)__" - leaves __FOO__ alone (allows you to use
-    "__DATA__" as a config value, for example)
+    *   "__HOME__" - replaced with "$c->path_to('')"
+
+    *   "__path_to(foo/bar)__" - replaced with "$c->path_to('foo/bar')"
+
+    *   "__literal(__FOO__)__" - leaves __FOO__ alone (allows you to use
+        "__DATA__" as a config value, for example)
 
     The parameter list is split on comma (","). You can override this method
     to do your own string munging, or you can define your own macros in
@@ -114,21 +121,24 @@ CONTRIBUTORS
     The following people have generously donated their time to the
     development of this module:
 
-    * Joel Bernstein <rataxis@cpan.org> - Rewrite to use Config::Any
-    * David Kamholz <dkamholz@cpan.org> - Data::Visitor integration
+    *   Joel Bernstein <rataxis@cpan.org> - Rewrite to use Config::Any
+
+    *   David Kamholz <dkamholz@cpan.org> - Data::Visitor integration
 
     Work to this module has been generously sponsored by:
 
-    * Portugal Telecom <http://www.sapo.pt/> - Work done by Joel Bernstein
+    *   Portugal Telecom <http://www.sapo.pt/> - Work done by Joel Bernstein
 
 COPYRIGHT AND LICENSE
-    Copyright 2008 by Brian Cassidy
+    Copyright 2006-2009 by Brian Cassidy
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
 
 SEE ALSO
-    * Catalyst
-    * Catalyst::Plugin::ConfigLoader::Manual
-    * Config::Any
+    *   Catalyst
+
+    *   Catalyst::Plugin::ConfigLoader::Manual
+
+    *   Config::Any
 
