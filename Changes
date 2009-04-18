@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.23 Sat Apr 18 2009
+    - Update Data::Visitor
+
 0.22  Mon Jan 05 2009
     - add a cookbook entry re: UTF-8 and Config::General (Octavian Rasnita)
     - switch from NEXT to MRO::Compat
