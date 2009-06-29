@@ -38,7 +38,8 @@ DESCRIPTION
 
     To support the distinction between development and production
     environments, this module will also attemp to load a local config (e.g.
-    myapp_local.yaml) which will override any duplicate settings.
+    myapp_local.yaml) which will override any duplicate settings. See
+    get_config_local_suffix for details on how this is configured.
 
 METHODS
   setup( )
@@ -76,14 +77,21 @@ METHODS
 
   get_config_local_suffix
     Determines the suffix of files used to override the main config. By
-    default this value is "local", but it can be specified in the following
-    order of preference:
+    default this value is "local", which will load "myapp_local.conf". The
+    suffix can be specified in the following order of preference:
 
     *   $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX }
 
     *   $ENV{ CATALYST_CONFIG_LOCAL_SUFFIX }
 
     *   "$c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }"
+
+    The first one of these values found replaces the default of "local" in
+    the name of the local config file to be loaded.
+
+    For example, if $ENV{ MYAPP_CONFIG_LOCAL_SUFFIX } is set to "testing",
+    ConfigLoader will try and load "myapp_testing.conf" instead of
+    "myapp_local.conf".
 
   finalize_config
     This method is called after the config file is loaded. It can be used to
@@ -98,6 +106,8 @@ METHODS
     three default macros:
 
     *   "__HOME__" - replaced with "$c->path_to('')"
+
+    *   "__ENV(foo)__" - replaced with the value of $ENV{foo}
 
     *   "__path_to(foo/bar)__" - replaced with "$c->path_to('foo/bar')"
 
@@ -124,6 +134,8 @@ CONTRIBUTORS
     *   Joel Bernstein <rataxis@cpan.org> - Rewrite to use Config::Any
 
     *   David Kamholz <dkamholz@cpan.org> - Data::Visitor integration
+
+    *   Stuart Watt - Addition of ENV macro.
 
     Work to this module has been generously sponsored by:
 

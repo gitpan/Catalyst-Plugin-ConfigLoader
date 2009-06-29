@@ -3,6 +3,7 @@ package MockApp;
 use Test::More tests => 10;
 
 use Cwd;
+local %ENV;
 $ENV{ CATALYST_HOME } = cwd . '/t/mockapp';
 
 use_ok( 'Catalyst', qw( ConfigLoader ) );

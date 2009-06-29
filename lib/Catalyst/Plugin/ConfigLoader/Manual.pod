@@ -187,5 +187,39 @@ should add the following config information to MyApp.pm:
         }
     } );
 
+=head2 Using a local configuration file
+
+When ConfigLoader reads configurations, it starts by reading the configuration
+file for C<myapp> with one of the supported extensions as listed
+L<above|/Config Formats>.
+
+For example, A L<Config::General> config file is C<myapp.conf>.
+
+If a configuration file called C<myapp_local> exists with one of the supported
+file extensions, it will also be read, and values from that file will
+override values from the main config file.
+
+A L<Config::General> local configuration file would be called
+C<myapp_local.conf>.
+
+The C<local> suffix can be changed.  See
+L<Catalyst::Plugin::ConfigLoader/get_config_local_suffix> for the details of
+how.
+
+This is useful because it allows different people or environments to have
+different configuration files.  A project with three developers,
+I<Tom>, I<Dick>, and I<Harry> as well as a production environment can have
+a C<myapp_tom.conf>, a C<myapp_dick.conf>, a C<myapp_harry.conf>, and a
+C<myapp_production.conf>.
+
+Each developer, and the web server, would set the environment variable
+to load their proper configuration file.  All of the configurations can
+be stored properly in source control.
+
+If there is no C<myapp.local>, and the individual configuration files contain
+something required to start the application, such as the Model's data source
+definition, the applicaton won't start unless the environment variable
+is set properly.
+
 =cut
 
