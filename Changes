@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.25  Fri Aug 07 2009
+    - Fix get_config_local_suffix and get_config_path when finding values 
+      from ENV vars (RT #47937)
+
 0.24  Mon Jun 29 2009
     - Add an __ENV(foo)__ macro + tests (Stuart Watt)
     - Document CATALYST_CONFIG_LOCAL_SUFFIX and MYAPP_LOCAL_CONFIG_SUFFIX

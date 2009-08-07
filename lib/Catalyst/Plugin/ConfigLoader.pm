@@ -8,7 +8,7 @@ use MRO::Compat;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.24';
+our $VERSION = '0.25';
 
 =head1 NAME
 
@@ -17,14 +17,14 @@ Catalyst::Plugin::ConfigLoader - Load config files of various types
 =head1 SYNOPSIS
 
     package MyApp;
-    
+
     # ConfigLoader should be first in your list so
     # other plugins can get the config information
     use Catalyst qw( ConfigLoader ... );
-    
+
     # by default myapp.* will be loaded
     # you can specify a file if you'd like
-    __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );    
+    __PACKAGE__->config( 'Plugin::ConfigLoader' => { file => 'config.yaml' } );
 
   In the file, assuming it's in YAML format:
 
@@ -63,7 +63,7 @@ for details on how this is configured.
 
 This method is automatically called by Catalyst's setup routine. It will
 attempt to use each plugin and, once a file has been successfully
-loaded, set the C<config()> section. 
+loaded, set the C<config()> section.
 
 =cut
 
@@ -179,7 +179,7 @@ sub get_config_path {
 
     my $appname = ref $c || $c;
     my $prefix  = Catalyst::Utils::appprefix( $appname );
-    my $path    = Catalyst::Utils::env_value( $c, 'CONFIG' )
+    my $path    = Catalyst::Utils::env_value( $appname, 'CONFIG' )
         || $c->config->{ 'Plugin::ConfigLoader' }->{ file }
         || $c->path_to( $prefix );
 
@@ -222,7 +222,7 @@ sub get_config_local_suffix {
     my $c = shift;
 
     my $appname = ref $c || $c;
-    my $suffix = Catalyst::Utils::env_value( $c, 'CONFIG_LOCAL_SUFFIX' )
+    my $suffix = Catalyst::Utils::env_value( $appname, 'CONFIG_LOCAL_SUFFIX' )
         || $c->config->{ 'Plugin::ConfigLoader' }->{ config_local_suffix }
         || 'local';
 
@@ -307,15 +307,15 @@ sub config_substitutions {
     my $subs = $c->config->{ 'Plugin::ConfigLoader' }->{ substitutions }
         || {};
     $subs->{ HOME }    ||= sub { shift->path_to( '' ); };
-    $subs->{ ENV }    ||= 
-        sub { 
-            my ( $c, $v ) = @_; 
+    $subs->{ ENV }    ||=
+        sub {
+            my ( $c, $v ) = @_;
             if (! defined($ENV{$v})) {
                 Catalyst::Exception->throw( message =>
                     "Missing environment variable: $v" );
                 return "";
             } else {
-                return $ENV{ $v }; 
+                return $ENV{ $v };
             }
         };
     $subs->{ path_to } ||= sub { shift->path_to( @_ ); };
@@ -346,7 +346,7 @@ development of this module:
 
 =back
 
-Work to this module has been generously sponsored by: 
+Work to this module has been generously sponsored by:
 
 =over 4
 
@@ -359,11 +359,11 @@ Work to this module has been generously sponsored by:
 Copyright 2006-2009 by Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself. 
+it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-=over 4 
+=over 4
 
 =item * L<Catalyst>
 
