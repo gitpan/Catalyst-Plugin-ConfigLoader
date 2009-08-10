@@ -1,9 +1,13 @@
 package MockApp;
 
 use Test::More tests => 10;
-
 use Cwd;
-local %ENV;
+
+# Remove all relevant env variables to avoid accidental fail
+foreach my $name ( grep { m{^(CATALYST)} } keys %ENV ) {
+    delete $ENV{ $name };
+}
+
 $ENV{ CATALYST_HOME } = cwd . '/t/mockapp';
 
 use_ok( 'Catalyst', qw( ConfigLoader ) );

@@ -1,5 +1,10 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.26  Mon Aug 10 2009
+    - Fix test to not need "parent" (RT #48547)
+    - Do not localize %ENV, rather, remove potentially conflicting
+      k-v pairs (RT #48557)
+
 0.25  Fri Aug 07 2009
     - Fix get_config_local_suffix and get_config_path when finding values 
       from ENV vars (RT #47937)

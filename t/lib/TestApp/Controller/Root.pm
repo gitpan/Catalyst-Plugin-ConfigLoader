@@ -2,7 +2,8 @@ package TestApp::Controller::Root;
 
 use strict;
 use warnings;
-use parent 'Catalyst::Controller';
+
+use base 'Catalyst::Controller';
 
 __PACKAGE__->config->{namespace} = '';
 
