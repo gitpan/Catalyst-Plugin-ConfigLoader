@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.27  Thu Aug 13 2009
+    - Require Catalyst 5.8 for tests that use ctx_request() (RT #48651)
+
 0.26  Mon Aug 10 2009
     - Fix test to not need "parent" (RT #48547)
     - Do not localize %ENV, rather, remove potentially conflicting

@@ -8,7 +8,7 @@ use MRO::Compat;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.26';
+our $VERSION = '0.27';
 
 =head1 NAME
 
