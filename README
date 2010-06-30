@@ -103,7 +103,7 @@ METHODS
 
   config_substitutions( $value )
     This method substitutes macros found with calls to a function. There are
-    three default macros:
+    a number of default macros:
 
     *   "__HOME__" - replaced with "$c->path_to('')"
 
@@ -142,7 +142,7 @@ CONTRIBUTORS
     *   Portugal Telecom <http://www.sapo.pt/> - Work done by Joel Bernstein
 
 COPYRIGHT AND LICENSE
-    Copyright 2006-2009 by Brian Cassidy
+    Copyright 2006-2010 by Brian Cassidy
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

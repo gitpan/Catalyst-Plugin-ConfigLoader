@@ -125,15 +125,29 @@ Catalyst::Plugin::ConfigLoader::Manual - Guide to using the ConfigLoader plugin
 
 =head3 Example Config
 
-    <config>
-        <name>TestApp</name>
-        <component name="Controller::Foo">
-            <foo>bar</foo>
-        </component>
-        <model name="Baz">
-            <qux>xyzzy</qux>
+ <config>
+        <name>MyApp::CMS</name>
+        <paths>
+          <upload_dir>/var/www/docs/myapp-cms/uploads</upload_dir>
+        </paths>
+        <model name="DB">
+          <connect_info>dbi:mysql:cmsdb</connect_info>
+          <connect_info>user</connect_info>
+          <connect_info>password</connect_info>
         </model>
-    </config>
+        <component name="View::TT">
+          <INCLUDE_PATH>__path_to(root,templates)__</INCLUDE_PATH>
+          <ENCODING>UTF-8</ENCODING>
+          <TRIM>1</TRIM>
+          <PRE_CHOMP>2</PRE_CHOMP>
+          <POST_CHOMP>2</POST_CHOMP>
+        </component>
+
+ </config>
+
+Note that the name attribute for the C<model> tag should be the relative
+namespace of the Catalyst model, not the absolute one.  That is for
+C<MyApp::Model::Something> the C<name> attribute should be C<Something>.
 
 =head2 YAML
 
@@ -216,10 +230,10 @@ Each developer, and the web server, would set the environment variable
 to load their proper configuration file.  All of the configurations can
 be stored properly in source control.
 
-If there is no C<myapp.local>, and the individual configuration files contain
-something required to start the application, such as the Model's data source
-definition, the applicaton won't start unless the environment variable
-is set properly.
+If there is no C<myapp_local.ext> (where .ext is a supported extension), and
+the individual configuration files contain something required to start the
+application, such as the Model's data source definition, the applicaton won't
+start unless the environment variable is set properly.
 
 =cut
 

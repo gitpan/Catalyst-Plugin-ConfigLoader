@@ -8,7 +8,7 @@ use MRO::Compat;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.27';
+our $VERSION = '0.28';
 
 =head1 NAME
 
@@ -273,8 +273,8 @@ sub finalize_config {
 
 =head2 config_substitutions( $value )
 
-This method substitutes macros found with calls to a function. There are three
-default macros:
+This method substitutes macros found with calls to a function. There are a
+number of default macros:
 
 =over 4
 
@@ -356,7 +356,7 @@ Work to this module has been generously sponsored by:
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006-2009 by Brian Cassidy
+Copyright 2006-2010 by Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

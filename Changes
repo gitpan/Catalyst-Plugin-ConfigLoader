@@ -1,5 +1,11 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.28  Wed Jun 30 2010
+    - Pod Fixes related to config_substitutions() (Oleg Kostyuk)
+    - Pod fix for the "Using a local configuration file" section of
+      the Manual (RT #48823)
+    - Expand XML config example in the manual (teejay, Kieren Diment)
+
 0.27  Thu Aug 13 2009
     - Require Catalyst 5.8 for tests that use ctx_request() (RT #48651)
 
