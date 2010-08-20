@@ -20,11 +20,11 @@ no_index:
     - t
 requires:
   Catalyst::Runtime: 5.7008
-  Config::Any: 0.08
+  Config::Any: 0.20
   Data::Visitor: 0.24
   MRO::Compat: 0.09
   perl: 5.8.0
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://dev.catalystframework.org/repos/Catalyst/Catalyst-Plugin-ConfigLoader/trunk/
-version: 0.28
+version: 0.29

@@ -1,5 +1,11 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.29  Fri Aug 20 2010
+    - Fix issue with 2 character app names that are kept in versioned
+      directories (e.g. app called QX in QX-2.1.5/)
+    - bump dep on Config::Any to use the -ForceArray Config::General option
+      (caelum)
+
 0.28  Wed Jun 30 2010
     - Pod Fixes related to config_substitutions() (Oleg Kostyuk)
     - Pod fix for the "Using a local configuration file" section of

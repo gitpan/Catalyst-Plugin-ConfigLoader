@@ -11,7 +11,7 @@ all_from 'lib/Catalyst/Plugin/ConfigLoader.pm';
 
 requires 'Catalyst::Runtime' => '5.7008';    # needed for env_value()
 requires 'Data::Visitor'     => '0.24';
-requires 'Config::Any'       => '0.08';
+requires 'Config::Any'       => '0.20';
 requires 'MRO::Compat'       => '0.09';
 
 test_requires 'Test::More';
