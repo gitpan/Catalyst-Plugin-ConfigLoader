@@ -16,6 +16,7 @@ requires 'MRO::Compat'       => '0.09';
 
 test_requires 'Test::More';
 
-resources repository => 'http://dev.catalystframework.org/repos/Catalyst/Catalyst-Plugin-ConfigLoader/trunk/';
+resources repository => 'git://git.shadowcat.co.uk/catagits/Catalyst-Plugin-ConfigLoader.git';
 
 WriteAll;
+
