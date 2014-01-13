@@ -1,5 +1,12 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.33  Mon Jan 13 2014
+   - Fix config loading so that if passed a directory including
+     a . in the file name, then loading it as a directory works
+     (would have previously tried to force a specific filename
+     and failed)
+   - More comprehensive tests
+
 0.32  Thu Mar 14 2013
    - Don't ship .git inside the tarball, whoops.
 
@@ -30,7 +37,7 @@ Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
       k-v pairs (RT #48557)
 
 0.25  Fri Aug 07 2009
-    - Fix get_config_local_suffix and get_config_path when finding values 
+    - Fix get_config_local_suffix and get_config_path when finding values
       from ENV vars (RT #47937)
 
 0.24  Mon Jun 29 2009

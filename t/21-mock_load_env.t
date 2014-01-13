@@ -6,7 +6,7 @@ use Cwd;
 # Remove all relevant env variables to avoid accidental fail
 foreach my $name ( grep { m{^(CATALYST|MOCKAPP)} } keys %ENV ) {
     delete $ENV{ $name };
-} 
+}
 
 $ENV{ CATALYST_HOME }  = cwd . '/t/mockapp';
 $ENV{ MOCKAPP_CONFIG } = $ENV{ CATALYST_HOME } . '/mockapp.pl';

@@ -4,6 +4,7 @@ author:
   - 'Brian Cassidy <bricas@cpan.org>'
 build_requires:
   ExtUtils::MakeMaker: 6.59
+  Path::Class: 0
   Test::More: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.59
@@ -28,4 +29,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: git://git.shadowcat.co.uk/catagits/Catalyst-Plugin-ConfigLoader.git
-version: 0.32
+version: 0.33

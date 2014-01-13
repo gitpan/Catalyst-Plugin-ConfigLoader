@@ -8,7 +8,7 @@ use MRO::Compat;
 use Data::Visitor::Callback;
 use Catalyst::Utils ();
 
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 
 =head1 NAME
 
@@ -183,7 +183,8 @@ sub get_config_path {
         || $c->config->{ 'Plugin::ConfigLoader' }->{ file }
         || $c->path_to( $prefix );
 
-    my ( $extension ) = ( $path =~ m{\.([^\/\\.]{1,4})$} );
+    ## don't look for extension if this is a dir
+    my ( $extension ) = !-d $path ? ( $path =~ m{\.([^\/\\.]{1,4})$} ) : () ;
 
     if ( -d $path ) {
         $path =~ s{[\/\\]$}{};

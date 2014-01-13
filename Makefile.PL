@@ -15,8 +15,8 @@ requires 'Config::Any'       => '0.20';
 requires 'MRO::Compat'       => '0.09';
 
 test_requires 'Test::More';
+test_requires 'Path::Class';
 
 resources repository => 'git://git.shadowcat.co.uk/catagits/Catalyst-Plugin-ConfigLoader.git';
 
 WriteAll;
-
