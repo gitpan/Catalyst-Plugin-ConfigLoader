@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::ConfigLoader.
 
+0.34  Wed Apr 16 2014
+   - Repackage without non-standard tarball headers.
+
 0.33  Mon Jan 13 2014
    - Fix config loading so that if passed a directory including
      a . in the file name, then loading it as a directory works
